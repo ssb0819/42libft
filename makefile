@@ -5,8 +5,7 @@ AR = ar
 CFLAGS = -Wall -Wextra -Werror
 ARFLAGS = rcs
 
-NAME = libft.a
-HEADER = libft.h
+INC_DIR = include
 
 SRCS = ft_isalpha.c \
 ft_isdigit.c \
@@ -53,17 +52,18 @@ ft_lstclear_bonus.c \
 ft_lstiter_bonus.c \
 ft_lstmap_bonus.c
 
-GNL_HEADER = get_next_line.h
 GNL_DIR = get_next_line
 GNL_SRCS = get_next_line.c get_next_line2.c get_next_line_bonus.c get_next_line_utils.c
 GNL_SRCS_FILES = $(addprefix $(GNL_DIR)/, $(GNL_SRCS))
 GNL_OBJS = $(GNL_SRCS_FILES:.c=.o)
 
-OBJ_DIR = objs
-OBJS = $(SRCS:.c=.o)
-OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(OBJS))
+NAME = libft.a
+
+SRC_DIR = libft_src
+SRCS_FILES = $(addprefix $(SRC_DIR)/, $(SRCS))
+OBJS = $(SRCS_FILES:.c=.o)
+BONUS_SRCS_FILES = $(addprefix $(SRC_DIR)/, $(BONUS_SRCS))
 BONUS_OBJS = $(BONUS_SRCS:.c=.o)
-BONUS_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(BONUS_OBJS))
 
 .PHONY: all bonus clean fclean re
 
@@ -72,30 +72,27 @@ all : libft_mandatory
 bonus : libft_bonus
 
 clean :
-	$(RM) $(OBJ_DIR) $(GNL_OBJS)
+	$(RM) $(OBJS) $(GNL_OBJS)
 	$(RM) libft_mandatory libft_bonus
 
 fclean: 
-	$(RM) $(BONUS_OBJ_FILES) $(OBJ_DIR) $(GNL_OBJS) $(NAME)
+	$(RM) $(OBJS) $(BONUS_OBJS) $(GNL_OBJS) $(NAME)
 	$(RM) libft_mandatory libft_bonus
 
 re: 
 	$(MAKE) fclean
 	$(MAKE) all
 
-libft_mandatory : $(OBJ_FILES) $(GNL_OBJS)
+libft_mandatory : $(OBJS) $(GNL_OBJS)
 	$(AR) $(ARFLAGS) $(NAME) $^
 	touch $@
 
-libft_bonus : $(OBJ_FILES) $(BONUS_OBJ_FILES) $(GNL_OBJS)
+libft_bonus : $(OBJS) $(BONUS_OBJS) $(GNL_OBJS)
 	$(AR) $(ARFLAGS) $(NAME) $^
 	touch $@
 
-$(NAME): $(OBJ_FILES)
-	$(AR) $(ARFLAGS) $(NAME) $(OBJ_FILES)
+$(NAME): $(OBJS)
+	$(AR) $(ARFLAGS) $(NAME) $^
 
-$(OBJ_DIR) :
-	mkdir $(OBJ_DIR)
-
-$(OBJ_DIR)/%.o : %.c $(HEADER) | $(OBJ_DIR)
+%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
