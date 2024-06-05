@@ -40,7 +40,11 @@ ft_striteri.c \
 ft_putchar_fd.c \
 ft_putstr_fd.c \
 ft_putendl_fd.c \
-ft_putnbr_fd.c
+ft_putnbr_fd.c \
+ft_strcmp.c \
+split_by_set.c \
+strchrs.c \
+strlen_by.c
 
 BONUS_OBJS = ft_lstnew_bonus.c \
 ft_lstadd_front_bonus.c \
@@ -59,7 +63,7 @@ GNL_OBJS = $(GNL_SRCS_FILES:.c=.o)
 
 NAME = libft.a
 
-SRC_DIR = libft_src
+SRC_DIR = src
 SRCS_FILES = $(addprefix $(SRC_DIR)/, $(SRCS))
 OBJS = $(SRCS_FILES:.c=.o)
 BONUS_SRCS_FILES = $(addprefix $(SRC_DIR)/, $(BONUS_SRCS))
